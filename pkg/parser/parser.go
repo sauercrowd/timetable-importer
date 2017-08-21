@@ -5,31 +5,11 @@ import (
 	"log"
 	"os"
 
+	"github.com/sauercrowd/timetable/pkg/festival"
 	"gopkg.in/yaml.v2"
 )
 
-type Band struct {
-	Name  string `yaml:"name"`
-	Start string `yaml:"start"`
-	Stop  string `yaml:"stop"`
-}
-
-type Day struct {
-	Date  string `yaml:"day"`
-	Bands []Band `yaml:"bands"`
-}
-
-type Location struct {
-	Name string `yaml:"name"`
-	Days []Day  `yaml:"days"`
-}
-
-type TimeTable struct {
-	Name      string     `yaml:"name"`
-	Locations []Location `yaml:"locations"`
-}
-
-func Parse(filepath string) (*TimeTable, error) {
+func Parse(filepath string) (*festival.TimeTable, error) {
 	f, err := os.Open(filepath)
 	if err != nil {
 		log.Println("Could not open file: ", err)
@@ -40,7 +20,7 @@ func Parse(filepath string) (*TimeTable, error) {
 		log.Println("Could not read file: ", err)
 		return nil, err
 	}
-	var ttable TimeTable
+	var ttable festival.TimeTable
 	if err := yaml.Unmarshal(content, &ttable); err != nil {
 		return nil, err
 	}
